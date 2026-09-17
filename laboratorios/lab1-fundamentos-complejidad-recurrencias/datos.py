@@ -1,4 +1,5 @@
 import random
+import algoritmos as al
 
 """Generadores de lotes de registros para los escenarios de Tamiza."""
  
@@ -13,13 +14,14 @@ def generar_aleatorio(n: int, semilla: int = 42) -> list[int]:
     Returns:
         Lista de n indices de riesgo enteros distintos, desordenada.
     """
-    lista_indices_random = []    
+    
+    lista_random = []
     random.seed(semilla)
     
     for _ in range(n):
-        lista_indices_random.append(random.randint(0, 1000))
+        lista_random.append(random.randint(0, 1000))
         
-    return lista_indices_random
+    return lista_random
  
  
 def generar_casi_ordenado(n: int, semilla: int = 42) -> list[int]:
@@ -34,27 +36,37 @@ def generar_casi_ordenado(n: int, semilla: int = 42) -> list[int]:
         98% en el orden que el algoritmo produce y el 2% restante
         desordenado al final.
     """
-    
+
     lista_random = generar_aleatorio(n, semilla)
     
     lista_ordenada = lista_random[:int(n*0.98)]
-    lista_ordenada.sort(reverse=True)
+    lista_ordenada = al.insertion_sort_inverso(lista_ordenada)[0]
     
     lista_desordenada = lista_random[int(n*0.98):]
     
     return (lista_ordenada + lista_desordenada)
  
-def generar_inverso(n: int) -> list[int]:
+def generar_inverso(n: int, semilla: int = 42) -> list[int]:
     """Genera un lote en el orden exactamente contrario (escenario C).
  
     Args:
         n: cantidad de registros del lote.
+        semilla: semilla del generador aleatorio.
  
     Returns:
         Lista de n indices de riesgo enteros distintos, en el orden
         inverso al que el algoritmo debe producir.
     """
     
-    lista_inversa = generar_aleatorio(n)
+    lista_random = generar_aleatorio(n, semilla)
+    lista_inversa = al.insertion_sort(lista_random)[0]
 
-    return sorted(lista_inversa)
+    return lista_inversa
+
+if __name__ == "__main__":
+    print("lista aleatoria---------------------------------")
+    print(generar_aleatorio(10))
+    print("lista casi ordenada----------------------------")
+    print(generar_casi_ordenado(10))
+    print("lista inversa-----------------------------------")
+    print(generar_inverso(10))
