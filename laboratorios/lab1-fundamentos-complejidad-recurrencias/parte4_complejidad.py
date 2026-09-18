@@ -22,14 +22,13 @@ class rendimiento:
         return f"n_entradas: {self.n_entradas}, T: {self.tiempo:.6f} s, Comparaciones: {self.comparaciones}"
 
 
-def probar_caso(lista_entradas: list[int], caso: str, semilla: int = 42) -> list[rendimiento]:
+def probar_caso_aleatorio(algoritmo, lista_entradas: list[int], semilla: int = 42) -> list[rendimiento]:
     """Prueba cada uno de los casos de ordenamiento para cada n en lista_entradas.
         
         Args:
             lista_entradas: lista de enteros positivos, cada uno representando
                 un tamaño de lote a ordenar.
-            caso: cadena que representa el caso de ordenamiento a probar.
-                Puede ser "A" (aleatorio), "B" (casi ordenado) o "C" (inverso).
+            algoritmo: cadena que determina el algoritmo a probar. Puede ser "merge" o "insertion".
             semilla: semilla para el generador aleatorio.
         """
     try:
@@ -37,18 +36,16 @@ def probar_caso(lista_entradas: list[int], caso: str, semilla: int = 42) -> list
         for n in lista_entradas:
             rendimiento_caso = rendimiento()
             
-            # Generar la lista de entrada según el caso especificado
-            if caso == "A":
-                lista = d.generar_aleatorio(n, semilla)
-            elif caso == "B":
-                lista = d.generar_casi_ordenado(n, semilla)
-            elif caso == "C":
-                lista = d.generar_inverso(n, semilla)
-            else:
-                raise ValueError("Caso desconocido: debe ser 'A', 'B' o 'C'.")
+            # Generar la lista de entradas aleatoria
+            lista = d.generar_aleatorio(n, semilla)
             
             inicio = time.perf_counter()  # Reinicia el contador de tiempo
-            _, comparaciones = al.merge_sort(lista)
+            
+            if (algoritmo == "merge"):
+                _, comparaciones = al.merge_sort(lista)
+            elif (algoritmo == "insertion"):
+                _, comparaciones = al.insertion_sort(lista)
+            
             fin = time.perf_counter()  # Detiene el contador de tiempo
             
             # Almacenar los resultados del rendimiento
@@ -64,53 +61,24 @@ def probar_caso(lista_entradas: list[int], caso: str, semilla: int = 42) -> list
         print(f"Error: {error}")
         return {}, {}
 
-
-def imprimir_grafico_tiempo(rendimientos_aleatorio, rendimientos_casi_ordenado, rendimientos_inverso):
+def imprimir_grafico_tiempo(rendimientos_insertion, rendimientos_merge):
     """ Imprime un grafico de lineas con los resultados de los tres casos de ordenamiento.
         
         Args:
             rendimientos_aleatorio: lista de objetos rendimiento para el caso A (aleatorio).
-            rendimientos_casi_ordenado: lista de objetos rendimiento para el caso B (casi ordenado).
-            rendimientos_inverso: lista de objetos rendimiento para el caso C (inverso).    
     """
-    plt.plot([r.n_entradas for r in rendimientos_aleatorio], [r.tiempo for r in rendimientos_aleatorio], label="Caso A (aleatorio)")
-    plt.plot([r.n_entradas for r in rendimientos_casi_ordenado], [r.tiempo for r in rendimientos_casi_ordenado], label="Caso B (casi ordenado)")
-    plt.plot([r.n_entradas for r in rendimientos_inverso], [r.tiempo for r in rendimientos_inverso], label="Caso C (inverso)")
-    
+    plt.plot([r.n_entradas for r in rendimientos_insertion], [r.tiempo for r in rendimientos_insertion], label="Insertion Sort")
+    plt.plot([r.n_entradas for r in rendimientos_merge], [r.tiempo for r in rendimientos_merge], label="Merge Sort")
+
     plt.xlabel("Tamaño de entrada")
     plt.ylabel("Tiempo de ejecución (segundos)")
-    plt.title("Tiempo de ejecución de Merge Sort")
+    plt.title("Tiempo de ejecución por algoritmo")
 
     plt.legend()
     plt.grid()
     carpeta = Path(__file__).resolve().parent / "graficas" # Crea la carpeta "graficas" en el mismo directorio que este script
     carpeta.mkdir(exist_ok=True)
-    plt.savefig(carpeta / "tiempos_merge_sort.png")
-    plt.show()
-    
-def imprimir_grafico_comparaciones(rendimientos_aleatorio, rendimientos_casi_ordenado, rendimientos_inverso):
-    """ Imprime un grafico de lineas con los resultados de los tres casos de ordenamiento.
-        
-        Args:
-            rendimientos_aleatorio: lista de objetos rendimiento para el caso A (aleatorio).
-            rendimientos_casi_ordenado: lista de objetos rendimiento para el caso B (casi ordenado).
-            rendimientos_inverso: lista de objetos rendimiento para el caso C (inverso).    
-    """
-    plt.plot([r.n_entradas for r in rendimientos_aleatorio], [r.comparaciones for r in rendimientos_aleatorio], label="Caso A (aleatorio)")
-    plt.plot([r.n_entradas for r in rendimientos_casi_ordenado], [r.comparaciones for r in rendimientos_casi_ordenado], label="Caso B (casi ordenado)")
-    plt.plot([r.n_entradas for r in rendimientos_inverso], [r.comparaciones for r in rendimientos_inverso], label="Caso C (inverso)")
-    
-    plt.ticklabel_format(axis='y', style='plain')  # Formato científico para el eje y
-    
-    plt.xlabel("Tamaño de entrada")
-    plt.ylabel("Número de comparaciones")
-    plt.title("Comparaciones de Merge Sort")
-
-    plt.legend()
-    plt.grid()
-    carpeta = Path(__file__).resolve().parent / "graficas" # Crea la carpeta "graficas" en el mismo directorio que este script
-    carpeta.mkdir(exist_ok=True)
-    plt.savefig(carpeta / "comparaciones_merge_sort.png")
+    plt.savefig(carpeta / "parte4_tiempo.png")
     plt.show()
     
 def main():
@@ -119,27 +87,20 @@ def main():
     semilla = 42  # Semilla para reproducibilidad de los resultados
     
     # Probar cada caso y almacenar los resultados
-    rendimientos_aleatorio = probar_caso(lista_entradas, "A", semilla)
-    rendimientos_casi_ordenado = probar_caso(lista_entradas, "B", semilla)
-    rendimientos_inverso = probar_caso(lista_entradas, "C", semilla)
+    rendimientos_insertion = probar_caso_aleatorio("insertion", lista_entradas, semilla)
+    rendimientos_merge = probar_caso_aleatorio("merge", lista_entradas, semilla)
     
     # Imprimir los resultados de cada caso
-    print("################## Resultados del caso A (aleatorio): ##################")
+    print("################## Resultados del algoritmo Insertion Sort: ##################")
     for _ in range(len(lista_entradas)):
-        print(rendimientos_aleatorio[_].__str__())
-    
-    print("\n################## Resultados del caso B (casi ordenado): ##################")
-    for _ in range(len(lista_entradas)):
-        print(rendimientos_casi_ordenado[_].__str__())
-    
-    print("\n################## Resultados del caso C (inverso): ##################")
-    for _ in range(len(lista_entradas)):
-        print(rendimientos_inverso[_].__str__())
+        print(rendimientos_insertion[_].__str__())
         
+    print("################## Resultados del algoritmo Merge Sort: ##################")
+    for _ in range(len(lista_entradas)):
+        print(rendimientos_merge[_].__str__())
+             
      # Imprimir y guardar gráficos de tiempo y comparaciones
-    imprimir_grafico_tiempo(rendimientos_aleatorio, rendimientos_casi_ordenado, rendimientos_inverso)
-    
-    imprimir_grafico_comparaciones(rendimientos_aleatorio, rendimientos_casi_ordenado, rendimientos_inverso)
+    imprimir_grafico_tiempo(rendimientos_insertion, rendimientos_merge)
      
 if __name__ == "__main__":
     main()

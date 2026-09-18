@@ -65,7 +65,6 @@ def probar_caso(lista_entradas: list[int], caso: str, semilla: int = 42) -> rend
         print(f"Error: {error}")
         return {}, {}
     
- 
 def imprimir_grafico_tiempo(rendimientos_aleatorio, rendimientos_casi_ordenado, rendimientos_inverso):
     """ Imprime un grafico de lineas con los resultados de los tres casos de ordenamiento.
         
@@ -86,7 +85,7 @@ def imprimir_grafico_tiempo(rendimientos_aleatorio, rendimientos_casi_ordenado, 
     plt.grid()
     carpeta = Path(__file__).resolve().parent / "graficas" # Crea la carpeta "graficas" en el mismo directorio que este script
     carpeta.mkdir(exist_ok=True)
-    plt.savefig(carpeta / "tiempos_insertion_sort.png")
+    plt.savefig(carpeta / "parte3_tiempo.png")
     plt.show()
     
 def imprimir_grafico_comparaciones(rendimientos_aleatorio, rendimientos_casi_ordenado, rendimientos_inverso):
@@ -111,7 +110,7 @@ def imprimir_grafico_comparaciones(rendimientos_aleatorio, rendimientos_casi_ord
     plt.grid()
     carpeta = Path(__file__).resolve().parent / "graficas" # Crea la carpeta "graficas" en el mismo directorio que este script
     carpeta.mkdir(exist_ok=True)
-    plt.savefig(carpeta / "comparaciones_insertion_sort.png")
+    plt.savefig(carpeta / "parte3_comparaciones.png")
     plt.show()
 
 def main():
