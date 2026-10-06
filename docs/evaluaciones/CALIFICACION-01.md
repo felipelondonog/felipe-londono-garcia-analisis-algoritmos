@@ -45,7 +45,7 @@
 - `merge_sort` cuenta mal las comparaciones: solo cuenta las del primer nivel y descarta las de las llamadas internas (para 6400 datos da 6398, cuando debería ser cerca de 70.000).
 - Los generadores no producen índices distintos: usan números al azar que se repiten (en 1000 datos solo hay unos 640 distintos).
 - Agregó `insertion_sort_inverso` y dejó `insertion_sort` ordenando de menor a mayor, mientras que Tamiza necesita de mayor a menor. Funciona, pero no sigue la firma pedida y el experimento no usa la función oficial.
-- Faltan *docstrings* en varias funciones y clases, no hay *type hints* completos, hay `import` antes del texto de descripción del módulo y numerosas líneas largas o con espacios sobrantes.
+- Faltan *docstrings* en varias funciones y clases, no hay *type hints* completos, hay `import` antes del texto de descripción del módulo y numerosas líneas largas.
 
 ## 4. Calidad del análisis de las gráficas (13 / 20)
 **Lo que hizo bien:**
