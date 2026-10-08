@@ -14,7 +14,7 @@ def subarreglo_fuerza_bruta(valores: list[float]) -> tuple[int, int, float]:
     """
     
     n = len(valores)
-    mejor_inicio, mejor_fin = 0
+    mejor_inicio, mejor_fin = 0, 0
     suma_maxima = float('-inf')
     
     for i in range(n):
