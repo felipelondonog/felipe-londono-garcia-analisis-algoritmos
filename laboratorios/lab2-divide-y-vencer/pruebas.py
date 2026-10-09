@@ -25,7 +25,7 @@ serie = [7]
 
 resultado_fuerza = subarreglo_fuerza_bruta(serie)
 resultado_divide = subarreglo_maximo(serie, 0, len(serie) - 1)
-
+# El mejor tramo es el único elemento de la lista
 assert resultado_fuerza[2] == 7
 assert resultado_divide[2] == 7
 
@@ -42,7 +42,7 @@ serie = [-8, -3, -10, -2, -7]
 resultado_fuerza = subarreglo_fuerza_bruta(serie)
 resultado_divide = subarreglo_maximo(serie, 0, len(serie) - 1)
 
-# El mejor tramo es el elemento -2
+# El mejor tramo es el elemento -2, el valor menos negativo
 assert resultado_fuerza[2] == -2
 assert resultado_divide[2] == -2
 
@@ -91,7 +91,7 @@ print(f"Divide y vencerás: {resultado_divide}")
 random.seed(42)
 
 print("\n6. Al menos veinte listas aleatorias.")
-
+# Generar al menos veinte listas aleatorias de longitud entre 1 y 30, con valores entre -100 y 100
 for _ in range(20):
     longitud = random.randint(1, 30)
 
@@ -106,7 +106,7 @@ for _ in range(20):
         0,
         len(serie) - 1
     )
-
+    # Asegurarse de que ambos algoritmos produzcan la misma suma máxima
     assert resultado_fuerza[2] == resultado_divide[2]
     print(f"Serie: {serie}")
     print(f"Fuerza bruta: {resultado_fuerza}")
