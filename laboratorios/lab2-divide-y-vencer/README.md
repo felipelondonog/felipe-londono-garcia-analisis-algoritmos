@@ -15,8 +15,9 @@
 3. Instale las librerías del archivo de requerimientos. Ejecute en la terminal `pip install -r requirements.txt`
 
 ## Ejecute los archivos de Python
-Ejecute cada programa directamente desde el entorno de desarrollo, o ejecute los los siguientes comando en la terminal:
-- `pruebas.py`
+Ejecute cada programa directamente desde el entorno de desarrollo, o ejecute los siguientes comando en la terminal ubicándose en el directorio laboratorios\lab2-divide-y-vencer:
+- `python pruebas.py` > [Pruebas - Parte 1](pruebas.py)
+- `python medicion.py` > [Medicion - Parte 2](medicion.py)
 
 >Al ejecutarse, cada programa imprimirá en la terminal el resultado de los rendimientos de cada experimento y mostrará en pantalla las gráficas, las cuáles además se guardan en la carpeta /graficas.
 
@@ -40,5 +41,13 @@ Las pruebas cubren los siguientes escenarios:
 Estas pruebas permitieron validar tanto la corrección de los resultados como el cumplimiento de las restricciones establecidas en el laboratorio, especialmente la correcta resolución de los casos izquierdo, derecho y cruzado en el algoritmo de divide y vencerás.
 
 # Parte 2 - Medir y graficar
+
+![alt text](graficas/tiempo_vs_n.png)
+
+Para comparar el rendimiento de los algoritmos de fuerza bruta y divide y vencerás, se implementó el experimento en el archivo [Medicion.py](medicion.py). Se utilizaron seis tamaños de entrada: 10, 50, 100, 500, 1000 y 5000 elementos. Los datos se generaron mediante números enteros aleatorios entre -100 y 100, utilizando una semilla fija (42) para favorecer la reproducibilidad de las mediciones.
+
+El tiempo de ejecución se midió con `time.perf_counter()`, registrando el tiempo inmediatamente antes y después de cada llamada a los algoritmos. Para cada tamaño se utilizó la misma lista de entrada en ambas implementaciones, lo que permite comparar sus tiempos bajo las mismas condiciones.
+
+La gráfica compara los tiempos de ejecución de ambos algoritmos en función del tamaño de entrada. Se utilizaron escalas logarítmicas en los ejes horizontal y vertical para facilitar la visualización de las diferencias de rendimiento entre las dos soluciones.Los resultados permiten observar cómo varía el tiempo de ejecución al aumentar el tamaño de la entrada y comparar el comportamiento práctico de ambas implementaciones. La gráfica sirve como base para contrastar las mediciones con las complejidades teóricas de fuerza bruta, `θ(n^2)`, y divide y vencerás, `θ(n\log n)`.
 
 # Parte 3 — Análisis en el README.md
